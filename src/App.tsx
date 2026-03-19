@@ -3,7 +3,7 @@ import { classifyEmail } from "./services/api";
 import Header from "./components/Header";
 import { UploadBox } from "./components/UploadBox";
 import { ResultCard } from "./components/ResultCard";
-import { ChatBox } from "./components/ChatBox";
+// import { ChatBox } from "./components/ChatBox";
 
 export default function App() {
   const [text, setText] = useState("");
@@ -53,7 +53,7 @@ export default function App() {
               </div>
             )}
             
-            <ChatBox />
+            {/* <ChatBox /> */}
           </div>
         </div>
       </div>

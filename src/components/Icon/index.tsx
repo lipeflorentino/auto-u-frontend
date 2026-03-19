@@ -1,4 +1,6 @@
 import emailIcon from '../../assets/icons/mail.png';
+import checkIcon from '../../assets/icons/check.png';
+import uncheckIcon from '../../assets/icons/uncheck.png';
 
 const sizeClasses = {
   xs: 'h-4 w-4',
@@ -18,6 +20,8 @@ type IconProps = {
 
 const iconMap = {
   email: emailIcon,
+  check: checkIcon,
+  uncheck: uncheckIcon
 };
 
 const Icon = ({ name, size = 'md', alt, className = '', style }: IconProps) => {
@@ -25,7 +29,7 @@ const Icon = ({ name, size = 'md', alt, className = '', style }: IconProps) => {
 
   if (!src) {
     console.error(`Ícone "${name}" não encontrado.`);
-    return null; // adicionar fallback
+    return null; // TODO: adicionar icone de fallback
   }
   
   const sizeStyle = typeof size === 'number' || size.includes('px') || size.includes('rem')

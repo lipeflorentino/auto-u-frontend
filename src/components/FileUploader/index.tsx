@@ -13,7 +13,7 @@ export const FileUploader = ({ onFileAccepted }: FileUploaderProps) => {
   const [progress, setProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
+  const MAX_FILE_SIZE = 2 * 1024 * 1024;
   const ALLOWED_TYPES = ["application/pdf", "text/plain"];
 
   const validateAndProcessFile = async (file: File) => {
@@ -40,7 +40,6 @@ export const FileUploader = ({ onFileAccepted }: FileUploaderProps) => {
         onFileAccepted(text);
       } 
       else if (file.type === "application/pdf") {
-        // const data = await extractPdfText(file);
         const data = await extractPdfWithProgress(file, (percent) => {
             setProgress(percent);
         });
