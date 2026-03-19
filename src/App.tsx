@@ -34,7 +34,7 @@ export default function App() {
             <UploadBox 
               text={text} 
               setText={setText} 
-              handleSubmit={handleSubmit} 
+              onClassify={handleSubmit} 
               loading={loading} 
             />
           </div>
