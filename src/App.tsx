@@ -3,10 +3,11 @@ import { classifyEmail } from "./services/api";
 import Header from "./components/Header";
 import { UploadBox } from "./components/UploadBox";
 import { ResultCard } from "./components/ResultCard";
+import type { ClassificationResult } from "./types/email";
 
 export default function App() {
   const [text, setText] = useState("");
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<ClassificationResult | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit() {
@@ -43,8 +44,8 @@ export default function App() {
             {result ? (
               <ResultCard 
                 category={result.category} 
-                confidence="92%" 
-                suggestedResponse={result.suggested_response} 
+                confidence={result.confidence} 
+                suggestedResponse={result.suggestedResponse} 
               />
             ) : (
               <div className="h-32 border border-dashed rounded-xl flex items-center justify-center text-gray-400">

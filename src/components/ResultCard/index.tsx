@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Icon from "../Icon";
-import { statusConfig } from "./style";
+import { statusConfig, confidenceLevels, getConfidenceLevelKey } from "./style";
 
 interface ResultCardProps {
-  category: "PRODUTIVO" | "NÃO PRODUTIVO";
-  confidence: string;
+  category: "PRODUTIVO" | "IMPRODUTIVO";
+  confidence: number;
   suggestedResponse: string;
 }
 
@@ -25,7 +25,11 @@ export const ResultCard = ({ category, confidence, suggestedResponse }: ResultCa
     return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, "");
   };
 
-  const style = statusConfig[normalizeKey(category)] || statusConfig["naoprodutivo"];
+  const style = statusConfig[normalizeKey(category)] || statusConfig["improdutivo"];
+
+  const percentage = Math.round(confidence * 100);
+  const confLevelKey = getConfidenceLevelKey(percentage);
+  const confStyle = confidenceLevels[confLevelKey];
 
   return (
     <div className="space-y-4">
@@ -33,21 +37,46 @@ export const ResultCard = ({ category, confidence, suggestedResponse }: ResultCa
         <div className="border rounded-xl p-4">
             <h2 className="font-medium mb-3">Resultado da Classificação</h2>
             <div className="space-y-4 w-full">
-                {/* Resultado e Score */}
+                {/* Resultado */}
                 <div className="grid grid-cols-2 gap-4 w-full items-center">
                     <div className={`grid grid-cols-3 ${style.bgCard} ${style.textColor} rounded-xl overflow-hidden shadow-sm h-full`}>
-                    <div className={`col-span-1 flex items-center justify-center py-4 ${style.bgIcon}`}>
-                        <Icon name={style.iconName} size="xl" />
+                        <div className={`col-span-1 flex items-center justify-center py-4 ${style.bgIcon}`}>
+                            <Icon name={style.iconName} size="xl" />
+                        </div>
+                        <div className="col-span-2 flex flex-col justify-center p-4">
+                            <h2 className="font-bold text-base uppercase truncate">{category}</h2>
+                            <p className="text-[10px] italic font-medium opacity-80">{style.label}</p>
+                        </div>
                     </div>
-                    <div className="col-span-2 flex flex-col justify-center p-4">
-                        <h2 className="font-bold text-base uppercase truncate">{category}</h2>
-                        <p className="text-[10px] italic font-medium opacity-80">{style.label}</p>
+                </div>
+                {/* IA Score e Barra de Progresso */}
+                <div className="flex flex-col gap-2 pr-2 relative">
+                    <div className="flex justify-between items-baseline mb-1">
+                        <span className="text-[10px] uppercase text-gray-400 font-bold tracking-tighter">
+                            IA Score
+                        </span>
+                        <span className={`text-[11px] font-bold uppercase tracking-wider ${confStyle.textColor}`}>
+                            {confStyle.label}
+                        </span>
                     </div>
-                    </div>
-
-                    <div className="flex flex-col items-end justify-center pr-2">
-                    <span className="text-[10px] uppercase text-gray-400 font-bold tracking-tighter">IA Score</span>
-                    <span className="text-xl font-bold text-gray-700">{confidence}</span>
+                    <div className="w-full bg-gray-100 rounded-full h-4 relative border border-gray-200 shadow-inner overflow-hidden group">
+                        <div 
+                            className={`h-full rounded-full ${confStyle.barColor} transition-all duration-500 ease-out`}
+                            style={{ width: `${percentage}%` }}
+                        />
+                        <div 
+                            className="absolute top-1/2 flex items-center justify-center w-9 h-9 flex-col group"
+                            style={{ 
+                                left: `${percentage}%`, 
+                                transform: 'translate(-50%, -50%)'
+                            }}
+                        >
+                            <div className={`flex items-center justify-center w-full h-full rounded-full border-4 shadow-xl ${confStyle.barColor} border-white bg-white transition-all duration-300 group-hover:scale-105 active:scale-95`}>
+                                <span className={`text-[11px] font-black ${confStyle.textColor}`}>
+                                    {`${percentage}%`}
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -8,8 +8,10 @@ export async function classifyEmail(content: string): Promise<ClassificationResu
     },
     body: JSON.stringify({ content }),
   });
+  
+  const parsed = await response.json()
 
-  return response.json();
+  return parsed;
 };
 
 export async function extractPdfText(file: File) {
