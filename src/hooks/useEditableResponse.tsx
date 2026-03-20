@@ -9,12 +9,15 @@ interface UseEditableResponseReturn {
   confirmChanges: () => void;
   cancelEditing: () => void;
   handleTextChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  copied: boolean;
+  handleCopy: () => Promise<void>;
 }
 
 export const useEditableResponse = (initialText: string): UseEditableResponseReturn => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState(initialText);
   const [originalText, setOriginalText] = useState(initialText);
+  const [copied, setCopied] = useState(false);
   
   const hasChanged = editedText !== originalText;
   
@@ -36,6 +39,16 @@ export const useEditableResponse = (initialText: string): UseEditableResponseRet
     setEditedText(event.target.value);
   };
   
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(editedText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Falha ao copiar:", err);
+    }
+  };
+  
   return {
     isEditing,
     editedText,
@@ -45,5 +58,7 @@ export const useEditableResponse = (initialText: string): UseEditableResponseRet
     confirmChanges,
     cancelEditing,
     handleTextChange,
+    copied,
+    handleCopy
   };
 };

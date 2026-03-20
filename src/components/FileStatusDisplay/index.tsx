@@ -9,17 +9,14 @@ interface FileStatusDisplayProps {
 export const FileStatusDisplay = ({ fileName, isDragging, onRemove }: FileStatusDisplayProps) => {
   if (fileName) {
     return (
-      <div className="flex flex-col items-center p-6 animate-fade-in">
-        <div className="flex items-center gap-2 mb-3">
-          <span className="text-2xl text-green-500">✅</span>
-          <p className="text-sm font-semibold text-gray-800">
-            Arquivo carregado: <span className="text-blue-600">{fileName}</span>
-          </p>
-        </div>
-        
+      <div className="flex flex-col items-center p-2 text-center animate-fade-in">
+        <span className="text-2xl mb-2 text-green-500">✅</span>
+        <p className="text-sm font-semibold text-gray-800">
+            Arquivo carregado: <span className="text-xs text-gray-500 mt-2">{fileName}</span>
+        </p>
         <button
           onClick={onRemove}
-          className="flex items-center gap-1.5 px-3 py-1 rounded-md text-red-500 hover:bg-red-50 transition-colors text-xs font-bold uppercase tracking-tighter"
+          className="flex items-center gap-1.5 px-3 py-1 my-1 rounded-md text-red-500 hover:bg-red-50 transition-colors text-xs font-bold uppercase tracking-tighter"
         >
           <span>🗑️</span>
           remover
