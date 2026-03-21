@@ -1,6 +1,8 @@
 import emailIcon from '../../assets/icons/mail.png';
 import checkIcon from '../../assets/icons/check.png';
 import uncheckIcon from '../../assets/icons/uncheck.png';
+import botIcon from '../../assets/icons/bot.png';
+import ubotIcon from '../../assets/icons/ubot.png';
 
 const sizeClasses = {
   xs: 'h-4 w-4',
@@ -21,7 +23,9 @@ type IconProps = {
 const iconMap = {
   email: emailIcon,
   check: checkIcon,
-  uncheck: uncheckIcon
+  uncheck: uncheckIcon,
+  bot: botIcon,
+  ubot: ubotIcon,
 };
 
 const Icon = ({ name, size = 'md', alt, className = '', style }: IconProps) => {

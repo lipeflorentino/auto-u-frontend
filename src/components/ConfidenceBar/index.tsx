@@ -12,7 +12,7 @@ export const ConfidenceBar = ({ confidence }: ConfidenceBarProps) => {
   return (
     <div className="flex flex-col gap-2 pr-2 relative">
       <div className="flex justify-between items-baseline mb-1">
-        <span className="text-[10px] uppercase text-gray-400 font-bold tracking-tighter">IA Score</span>
+        <span className="text-[10px] uppercase text-gray-400 font-bold tracking-tighter">Confiança:</span>
         <span className={`text-[11px] font-bold uppercase tracking-wider ${confStyle.textColor}`}>
           {confStyle.label}
         </span>

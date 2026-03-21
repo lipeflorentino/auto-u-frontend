@@ -1,4 +1,5 @@
 import { FileUploader } from "../FileUploader";
+import Icon from "../Icon";
 
 interface UploadBoxProps {
   text: string;
@@ -29,10 +30,17 @@ export const UploadBox = ({ text, setText, onClassify, loading }: UploadBoxProps
         <button
             onClick={onClassify}
             disabled={loading || !text}
-            className="mt-4 w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl font-medium shadow-sm hover:shadow-md disabled:opacity-50 transition-all"
+            className="mt-3 w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl font-medium shadow-sm hover:shadow-md disabled:opacity-50 transition-all flex items-center justify-center gap-2"
         >
-            {loading ? "Analisando..." : "Classificar Email"}
-      </button>
+            {loading ? (
+                <div className="w-6 h-6 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
+            ) : (
+                <>
+                    <Icon name="ubot" size="md" />
+                    <span>Classificar Email</span>
+                </>
+            )}
+        </button>
     </div>
   );
 };
