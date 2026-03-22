@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface UseEditableResponseReturn {
   isEditing: boolean;
@@ -20,6 +20,12 @@ export const useEditableResponse = (initialText: string): UseEditableResponseRet
   const [copied, setCopied] = useState(false);
   
   const hasChanged = editedText !== originalText;
+
+  useEffect(() => {
+    setEditedText(initialText);
+    setOriginalText(initialText);
+    setIsEditing(false);
+  }, [initialText]);
   
   const toggleEditing = () => {
     setIsEditing((prev) => !prev);
