@@ -1,75 +1,84 @@
-# React + TypeScript + Vite
+# ⚛️ Auto-U Frontend: Interface Inteligente para Triagem de E-mails
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este é o frontend do **Auto-U**, uma Single Page Application (SPA) desenvolvida para gerenciar o fluxo de classificação de e-mails. A interface foi projetada para ser intuitiva, permitindo que os usuarios visualizem as decisões da IA, editem respostas e processem documentos com feedback em tempo real.
 
-Currently, two official plugins are available:
+## 🛠️ Decisões Técnicas & Ecossistema
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+A escolha da stack priorizou a velocidade de desenvolvimento (DX) e a organização do código em produção.
 
-## React Compiler
+### 1. Core: React + TypeScript
+Optei pelo **TypeScript** para garantir uma arquitetura "type-safe". 
+* **Tipagem Estrita:** O uso de interfaces complexas para os retornos da API (categorias, scores de confiança e sugestões) evita erros em tempo de execução e facilita o refactoring.
+**React** pela sua capacidade de criar interfaces de usuário (UI) rápidas, modulares e reativas usando componentes reutilizáveis.
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+### 2. Build & Performance: Vite
+Em substituição ao antigo Create React App, utilizei o **Vite** pela praticidade e inicio rapido de desenvolvimento.
 
-Note: This will impact Vite dev & build performances.
+### 3. Estilização: Tailwind CSS
+A interface utiliza **Tailwind CSS** para um design system utilitário e pela velocidade de desenvolvimento.
+* **Performance:** O CSS gerado é mínimo, contendo apenas as classes realmente utilizadas.
+* **Design Responsivo:** Facilita a adaptação da dashboard para diferentes resoluções sem a necessidade de media queries complexas em arquivos separados.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🏗️ Arquitetura do Frontend
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+O projeto segue princípios de **Clean Architecture** adaptados ao ecossistema React, promovendo a separação de responsabilidades:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+* **Components (UI):** Componentes granulares e "burros" (S.O.L.I.D.). Exemplos: `UploadBox`, `ResultCard`, `FileUploader`.
+* **Services (Infrastructure):** Camada isolada para comunicação via HTTP. Utiliza `FormData` para integração nativa com o endpoint de extração de PDF do FastAPI.
+* **Styles/Utils (Domain/Logic):** Centralização de constantes de design (`style.ts`) e funções de normalização de dados (remoção de acentos e espaços para chaves de configuração).
+* **Hooks (Application):** Lógica de estado complexa e efeitos colaterais encapsulados para manter os componentes limpos.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🚦 Funcionalidades de Destaque
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Funcionalidade | Implementação Técnica | Benefício |
+| :--- | :--- | :--- |
+| **Drag & Drop** | Drag and drop nativo | UX fluida para upload de arquivos sem depender de libs pesadas. |
+| **Barras de progresso** | XMLHttpRequest (XHR) | Barra de progresso real baseada no upload de bytes para o servidor. |
+| **Estilização dinamica** | Mapped Types & StatusConfig | A interface muda de cor (Green/Amber) dinamicamente baseada na categoria da IA. |
+| **Botão copiar** | Clipboard | Copia a resposta sugerida com feedback visual temporário de sucesso. |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+
+## ☁️ Deploy & CI/CD
+
+### Vercel (Cloud Deployment)
+Escolhi a **Vercel** para o deploy do frontend devido ao seu ecossistema otimizado para React/Vite.
+* **Edge Network:** Garante que os assets estáticos sejam servidos do nó mais próximo do usuário.
+* **Preview Deployments:** Cada Pull Request gera uma URL de visualização única, facilitando a revisão de código e QA.
+* **Desacoplamento:** O frontend opera de forma totalmente independente do backend (GCP), comunicando-se via fetchAPI
+
+### GitHub Actions
+Pipeline automatizado que executa:
+1.  **Linter & Type-Check:** Garante que nenhum código quebre as regras de tipagem ou estilo.
+2.  **Build Check:** Valida se a aplicação compila corretamente antes do merge na `main`.
+
+---
+
+## ⚙️ Como Executar
+
+**Pré-requisitos:** Node.js v19+ e um gerenciador de pacotes (NPM/Yarn/pnpm).
+
+1.  Clone o repositório.
+2.  Crie um arquivo `.env` com a URL do seu backend:
+    ```env
+    VITE_API_URL=http://localhost:8000
+    ```
+3.  **Instalação:**
+    ```bash
+    pnpm install
+    ```
+4.  **Execução Local:**
+    ```bash
+    pnpm start
+    ```
+5.  **Build de Produção:**
+    ```bash
+    pnpm build
+    ```
+
+---
+*Desenvolvido por Filipe F. Lima - Fullstack Developer*
