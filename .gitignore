@@ -11,3 +11,5 @@ dist
 dist-ssr
 tarefas.md
 .env
+.env.production
+tarefas.md

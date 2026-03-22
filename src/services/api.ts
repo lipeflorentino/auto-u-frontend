@@ -1,7 +1,9 @@
 import type { ClassificationResult } from "../types/email";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export async function classifyEmail(content: string): Promise<ClassificationResult> {
-  const response = await fetch("http://localhost:8000/classify", {
+  const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/classify`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -19,7 +21,7 @@ export async function extractPdfText(file: File) {
   
   formData.append("file", file);
 
-  const response = await fetch("http://localhost:8000/extract-pdf", {
+  const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/extract-pdf`, {
     method: "POST",
     body: formData,
   });
@@ -57,7 +59,7 @@ export function extractPdfWithProgress(
 
     xhr.onerror = () => reject(new Error("Erro na requisição"));
 
-    xhr.open("POST", "http://localhost:8000/extract-pdf");
+    xhr.open("POST", `${API_BASE_URL}/extract-pdf`);
     xhr.send(formData);
   });
 }
