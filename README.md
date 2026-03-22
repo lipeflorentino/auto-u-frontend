@@ -9,7 +9,7 @@ A escolha da stack priorizou a velocidade de desenvolvimento (DX) e a organizaç
 ### 1. Core: React + TypeScript
 Optei pelo **TypeScript** para garantir uma arquitetura "type-safe". 
 * **Tipagem Estrita:** O uso de interfaces complexas para os retornos da API (categorias, scores de confiança e sugestões) evita erros em tempo de execução e facilita o refactoring.
-**React** pela sua capacidade de criar interfaces de usuário (UI) rápidas, modulares e reativas usando componentes reutilizáveis.
+* **React** pela sua capacidade de criar interfaces de usuário (UI) rápidas, modulares e reativas usando componentes reutilizáveis.
 
 ### 2. Build & Performance: Vite
 Em substituição ao antigo Create React App, utilizei o **Vite** pela praticidade e inicio rapido de desenvolvimento.
@@ -79,6 +79,12 @@ Pipeline automatizado que executa:
     ```bash
     pnpm build
     ```
+
+## 🌐 Interface Web Online
+
+A aplicação está disponível publicamente para consumo. 
+
+Url: https://auto-u-frontend-smoky.vercel.app
 
 ---
 *Desenvolvido por Filipe F. Lima - Fullstack Developer*
