@@ -9,6 +9,10 @@ interface UploadBoxProps {
 }
 
 export const UploadBox = ({ text, setText, onClassify, loading }: UploadBoxProps) => {
+    const MAX_CHARS = 3500;
+    const isOverLimit = text.length > MAX_CHARS;
+    const isNearLimit = text.length > MAX_CHARS * 0.9;
+
   return (
     <div className="border rounded-xl p-4 bg-white">
         <h2 className="font-medium mb-3">Enviar Email</h2>
@@ -20,12 +24,25 @@ export const UploadBox = ({ text, setText, onClassify, loading }: UploadBoxProps
         </p>
 
         <textarea
-            className="mt-4 w-full border rounded-lg p-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+            className={`mt-4 w-full border rounded-lg p-3 text-sm outline-none transition-all
+                ${isOverLimit ? "border-red-500 focus:ring-red-500" : "focus:ring-2 focus:ring-blue-500"}`}
             rows={6}
             placeholder="Cole o conteúdo ou arraste um arquivo acima..."
             value={text}
             onChange={(e) => setText(e.target.value)}
         />
+
+        <div className="mt-1 flex justify-between items-center">
+            <p className={`text-xs ${isOverLimit ? "text-red-600" : isNearLimit ? "text-yellow-600" : "text-gray-500"}`}>
+                {text.length}/{MAX_CHARS} caracteres
+            </p>
+
+            {isOverLimit && (
+                <p className="text-xs text-red-600">
+                O texto excede o limite de tokens. A IA pode apresentar problemas na geração.
+                </p>
+            )}
+        </div>
 
         <button
             onClick={onClassify}
